@@ -3,13 +3,16 @@
 
 class Character
 {
-private:
+protected:
     int hp, mp, stam; // Stands for health-points, mana-points and stamina
     Vector2 position;
+    float velocity;
     Rectangle hitBox;
     
 public:
-    virtual void Update();  // This is a method that will contain all the behaviour of a Character Object
-    Character(int hp = 100, int mp = 50, int stam = 25);
-    virtual ~Character() = default;
+    //virtual void Update();  // This is a method that will contain all the behaviour of a Character Object
+    void DrawHitBox();
+    virtual void Update() = 0;
+    Character();
+    ~Character() = default;
 };

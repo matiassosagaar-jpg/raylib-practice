@@ -3,7 +3,8 @@
 
 class Player : public Character {
 private:
-    int agility, strenght, intelect;
+    int agility = 3, strenght = 3, intelect = 3, level = 1;
+    void Walk();
 public:
     Player();
     void Update() override;
