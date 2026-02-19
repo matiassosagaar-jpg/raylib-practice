@@ -5,7 +5,6 @@ class Character
 {
 protected:
     int hp, mp, stam; // Stands for health-points, mana-points and stamina
-    Vector2 position;
     float velocity;
     Rectangle hitBox;
     

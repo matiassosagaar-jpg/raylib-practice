@@ -7,7 +7,6 @@ private:
 
 public:
     Player player;
-
     void Draw();
     void Update();
 };
