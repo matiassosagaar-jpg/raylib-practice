@@ -4,7 +4,6 @@ void Game::Draw() {
     BeginDrawing();
     ClearBackground(BLACK);
     player.DrawHitBox();
-    Grid::Draw();
     EndDrawing();
 }
 

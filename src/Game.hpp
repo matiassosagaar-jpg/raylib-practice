@@ -1,7 +1,7 @@
 #pragma once
 #include <raylib.h>
 #include "Player.hpp"
-#include "MapVars.hpp"
+
 class Game {
 private:
 
