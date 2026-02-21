@@ -15,5 +15,6 @@ void Character::DrawHitBox() const
 
 Vector2 Character::GetPosition() const
 {
-    return { hitBox.x, hitBox.y };
+        return { hitBox.x + hitBox.width / 2,
+             hitBox.y + hitBox.height / 2 };
 }
