@@ -4,14 +4,18 @@
 class Character
 {
 protected:
-    int hp, mp, stam; // Stands for health-points, mana-points and stamina
-    float velocity;
-    Rectangle hitBox;
-    
+    int hp, mp, stam;
+
+    Rectangle hitBox;      // Fuente real de posición
+    Vector2 velocity;      // Velocidad actual
+    float moveSpeed;       // Velocidad máxima (px/seg)
+
 public:
-    //virtual void Update();  // This is a method that will contain all the behaviour of a Character Object
-    void DrawHitBox();
-    virtual void Update() = 0;
-    Character();
-    ~Character() = default;
+    Character(float x, float y, float width, float height);
+    virtual ~Character() = default;
+
+    virtual void Update(float dt) = 0;
+    void DrawHitBox() const;
+
+    Vector2 GetPosition() const;
 };

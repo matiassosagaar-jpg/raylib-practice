@@ -1,9 +1,19 @@
 #include "Character.hpp"
 
-Character::Character()
-: hp {100}, mp {50}, stam {25}, hitBox{0, 0, 36, 72} { // Testing position and hitBox, not determined yet
+Character::Character(float x, float y, float width, float height)
+    : hp{100}, mp{50}, stam{25},
+      hitBox{ x, y, width, height },
+      velocity{ 0.0f, 0.0f },
+      moveSpeed{ 200.0f } // 200 px/seg
+{
 }
 
-void Character::DrawHitBox() {
-    DrawRectangleLines(hitBox.x, hitBox.y, hitBox.width, hitBox.height, WHITE);
+void Character::DrawHitBox() const
+{
+    DrawRectangleLinesEx(hitBox, 2, WHITE);
+}
+
+Vector2 Character::GetPosition() const
+{
+    return { hitBox.x, hitBox.y };
 }

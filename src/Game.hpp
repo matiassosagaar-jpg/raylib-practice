@@ -4,9 +4,17 @@
 
 class Game {
 private:
+    Player player;
+    Camera2D camera;
+
+    float deltaTime;
+
+    void UpdateCamera();
 
 public:
-    Player player;
-    void Draw();
+    Game();
+
+    void Init();
     void Update();
+    void Draw();
 };
