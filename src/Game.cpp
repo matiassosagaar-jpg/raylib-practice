@@ -18,6 +18,8 @@ void Game::Update()
     deltaTime = GetFrameTime();
 
     player.Update(deltaTime);
+    player.ResolveCollisions(deltaTime, world.GetColliders());
+
     UpdateCamera();
 }
 
@@ -26,7 +28,7 @@ void Game::UpdateCamera()
     camera.target = Vector2Lerp(
     camera.target,
     player.GetPosition(),
-    3.0f * deltaTime
+    5.0f * deltaTime
 );
 }
 
@@ -36,7 +38,7 @@ void Game::Draw()
     ClearBackground(BLACK);
 
     BeginMode2D(camera);
-    DrawRectangle(0, 0, 100, 100, RED);
+    world.Draw();
     player.DrawHitBox();
 
     EndMode2D();
