@@ -26,7 +26,7 @@ void Game::UpdateCamera()
     camera.target = Vector2Lerp(
     camera.target,
     player.GetPosition(),
-    5.0f * deltaTime
+    3.0f * deltaTime
 );
 }
 
