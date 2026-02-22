@@ -1,5 +1,5 @@
 #include "Game.hpp"
-
+#include <raymath.h>
 Game::Game()
     : player(400.0f, 300.0f), deltaTime(0.0f)
 {
@@ -23,7 +23,11 @@ void Game::Update()
 
 void Game::UpdateCamera()
 {
-    camera.target = player.GetPosition();
+    camera.target = Vector2Lerp(
+    camera.target,
+    player.GetPosition(),
+    5.0f * deltaTime
+);
 }
 
 void Game::Draw()
