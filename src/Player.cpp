@@ -31,5 +31,4 @@ void Player::ApplyMovement(float dt)
 void Player::Update(float dt)
 {
     HandleInput();
-    ApplyMovement(dt);
 }

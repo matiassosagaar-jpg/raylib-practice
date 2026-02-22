@@ -1,6 +1,6 @@
 #pragma once
 #include "Character.hpp"
-
+#include <vector>
 class Player : public Character
 {
 private:
@@ -15,4 +15,5 @@ private:
 public:
     Player(float x, float y);
     void Update(float dt) override;
+    void ResolveCollisions(float dt, const std::vector<Rectangle>& worldColliders);
 };
