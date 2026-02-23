@@ -22,12 +22,6 @@ void Player::HandleInput()
     }
 }
 
-void Player::ApplyMovement(float dt)
-{
-    hitBox.x += velocity.x * moveSpeed * dt;
-    hitBox.y += velocity.y * moveSpeed * dt;
-}
-
 void Player::ResolveCollisions(float dt, const std::vector<Rectangle>& worldColliders)
 {
     hitBox.x += velocity.x * moveSpeed * dt;  //movement application

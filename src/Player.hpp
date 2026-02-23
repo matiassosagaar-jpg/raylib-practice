@@ -28,7 +28,6 @@ public:
 private:
     // ---- Internal Logic ----
     void HandleInput();
-    void ApplyMovement(float dt);
 
     void UpdateIdle(float dt);
     void UpdateMove(float dt);
