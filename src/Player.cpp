@@ -2,7 +2,7 @@
 #include <raymath.h>
 
 Player::Player(float x, float y)
-    : Character(x, y, 36.0f, 72.0f)
+    : Character(x, y, 36.0f, 72.0f), currentState {State::Idle}
 {
 }
 
@@ -65,8 +65,42 @@ void Player::ResolveCollisions(float dt, const std::vector<Rectangle>& worldColl
         }
     }
 }
+Player::State Player::GetState() const {
+    return currentState;
+}
+void Player::UpdateIdle(float dt)
+{  // Basicamente maneja el input y luego se fija si el el vector de velocidad no es 0,0 para setear el miembro "currentState"
+    HandleInput();
+
+    if (velocity.x != 0 || velocity.y != 0)
+    {
+        currentState = State::Move;
+    }
+}
+
+void Player::UpdateMove(float dt)
+{  // Maneja input - si el personaje esta quieto, setea currentState a Idle
+    HandleInput();
+
+    if (velocity.x == 0 && velocity.y == 0)
+    {
+        currentState = State::Idle;
+    }
+}
 
 void Player::Update(float dt)
 {
-    HandleInput();
+    switch (currentState)
+    {
+        case State::Idle:
+            UpdateIdle(dt);
+            break;
+
+        case State::Move:
+            UpdateMove(dt);
+            break;
+
+        default:
+            break;
+    }
 }
