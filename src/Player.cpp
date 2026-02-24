@@ -2,7 +2,8 @@
 #include <raymath.h>
 
 Player::Player(float x, float y)
-    : Character(x, y, 36.0f, 72.0f), currentState {State::Idle}
+    : Character(x, y, 36.0f, 72.0f), currentState {State::Idle},
+    attackDuration {0.4f}, attackTimer {0.0f}
 {
 }
 
@@ -59,29 +60,64 @@ void Player::ResolveCollisions(float dt, const std::vector<Rectangle>& worldColl
         }
     }
 }
-Player::State Player::GetState() const {
+Player::State Player::GetState() const 
+{
     return currentState;
+}
+void Player::ChangeState(State newState) 
+{
+    if (currentState == newState) // Evitando transiciones redundantes
+        return;
+
+    currentState = newState;
+
+    switch (newState)
+    {
+    case State::Attack:
+        attackTimer = attackDuration; // Si cambiamos al estado Attack, activaremos el cd de AttackTimer
+        velocity = {0.0f, 0.0f};      // La idea es que cuando Attack timer sea 0, se pueda usar devuelta el ataque
+        break;                       
+    
+    default:
+        break;
+    }
 }
 void Player::UpdateIdle(float dt)
 {  // Basicamente maneja el input y luego se fija si el el vector de velocidad no es 0,0 para setear el miembro "currentState"
     HandleInput();
-
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {   // El keybind para el ataque básico va a ser el boton izquierdo del mouse
+        ChangeState(State::Attack);
+        return;
+    }
     if (velocity.x != 0 || velocity.y != 0)
     {
-        currentState = State::Move;
+        ChangeState(State::Move);
     }
 }
 
 void Player::UpdateMove(float dt)
 {  // Maneja input - si el personaje esta quieto, setea currentState a Idle
     HandleInput();
-
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {   // El keybind para el ataque básico va a ser el boton izquierdo del mouse
+        ChangeState(State::Attack);
+        return;
+    }
     if (velocity.x == 0 && velocity.y == 0)
     {
-        currentState = State::Idle;
+        ChangeState(State::Idle);
     }
 }
 
+void Player::UpdateAttack(float dt)
+{
+    attackTimer -= dt;  // Cada vez que se llame este metodo (cada frame), se le descontara el tiempo transcurrido desde el frame anterior
+    if (attackTimer <= 0.0f)    // Cuando llegue a cero, devuelve el estado a inactivo
+    {
+        ChangeState(State::Idle);
+    }
+}
 void Player::Update(float dt)
 {
     switch (currentState)
@@ -92,6 +128,10 @@ void Player::Update(float dt)
 
         case State::Move:
             UpdateMove(dt);
+            break;
+
+        case State::Attack:
+            UpdateAttack(dt);
             break;
 
         default:
