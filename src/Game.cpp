@@ -40,7 +40,10 @@ void Game::Draw()
     BeginMode2D(camera);
     world.Draw();
     player.DrawHitBox();
-
+    if (player.IsAttackActive())
+    {
+    DrawRectangleLinesEx(player.GetAttackHitbox(), 2, RED); // Drawing attack hitbox 
+    }
     EndMode2D();
 
     EndDrawing();

@@ -3,7 +3,7 @@
 
 Player::Player(float x, float y)
     : Character(x, y, 36.0f, 72.0f), currentState {State::Idle},
-    attackDuration {0.4f}, attackTimer {0.0f}
+    attackDuration {0.4f}, attackTimer {0.0f}, attackActive {false}
 {
 }
 
@@ -60,10 +60,23 @@ void Player::ResolveCollisions(float dt, const std::vector<Rectangle>& worldColl
         }
     }
 }
+
+// ------ Getters -------
 Player::State Player::GetState() const 
 {
     return currentState;
 }
+
+bool Player::IsAttackActive() const
+{
+    return attackActive;
+}
+
+Rectangle Player::GetAttackHitbox() const
+{
+    return attackHitbox;
+}
+// ------------------------
 void Player::ChangeState(State newState) 
 {
     if (currentState == newState) // Evitando transiciones redundantes
@@ -112,11 +125,36 @@ void Player::UpdateMove(float dt)
 
 void Player::UpdateAttack(float dt)
 {
-    attackTimer -= dt;  // Cada vez que se llame este metodo (cada frame), se le descontara el tiempo transcurrido desde el frame anterior
-    if (attackTimer <= 0.0f)    // Cuando llegue a cero, devuelve el estado a inactivo
+    attackTimer -= dt;  
+    
+    float elapsed = attackDuration - attackTimer; // Tiempo transcurrido desde que se inició la acción de atacar
+
+    if (elapsed >= 0.1f && elapsed <= 0.25f) // La hitbox del ataque durara entre el segundo 0.1 y 0.25 desde que cambió el estado
     {
+        attackActive = true;
+        UpdateAttackHitbox(); 
+    }
+    else
+    {
+        attackActive = false;
+    }
+    if (attackTimer <= 0.0f)    // si el attack timer es igual o menor a cero quiere decir que ya terminó
+    {
+        attackActive = false;  // seteando attackActive a falso y volviendo a estado inactivo.
         ChangeState(State::Idle);
     }
+}
+
+void Player::UpdateAttackHitbox()
+{
+    float range = 40.0f;
+
+    attackHitbox = {
+        hitBox.x + hitBox.width, // Hitbox xPos will be on Player's right side
+        hitBox.y,   // It's yPos will be the same as Player's
+        range,      // The range of the attack will be the width of the rectangle
+        hitBox.height   //  It'll have the same amplitude as the player's height
+    };
 }
 void Player::Update(float dt)
 {
